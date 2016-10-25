@@ -7,14 +7,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by Влад on 24.10.2016.
  */
 public class StudentAdapter extends ArrayAdapter<Student> {
 
-    public StudentAdapter(Context context, List<Student> objects) {
+    public StudentAdapter(Context context, ArrayList<Student> objects) {
         super(context, 0, objects);
     }
 
@@ -23,7 +23,7 @@ public class StudentAdapter extends ArrayAdapter<Student> {
 
         View listItemView = convertView;
         if(listItemView == null) {
-            listItemView = LayoutInflater.from(getContext()).inflate(R.layout.students_category, parent, false);
+            listItemView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
         }
 
         Student currentStudent = getItem(position);
