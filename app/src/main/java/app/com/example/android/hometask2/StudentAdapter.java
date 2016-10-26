@@ -1,10 +1,13 @@
 package app.com.example.android.hometask2;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -26,11 +29,19 @@ public class StudentAdapter extends ArrayAdapter<Student> {
             listItemView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
         }
 
-        Student currentStudent = getItem(position);
+        final Student currentStudent = getItem(position);
 
         TextView textView = (TextView) listItemView.findViewById(R.id.name_student);
         textView.setText(currentStudent.getNameOfStudent());
 
+        Button button = (Button) listItemView.findViewById(R.id.git_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(currentStudent.getGit()));
+                getContext().startActivity(intent);
+            }
+        });
         return listItemView;
     }
 }

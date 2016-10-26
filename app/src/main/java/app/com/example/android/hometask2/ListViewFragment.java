@@ -67,6 +67,7 @@ public class ListViewFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
         return rootView;
     }
 
