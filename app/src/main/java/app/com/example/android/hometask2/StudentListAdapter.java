@@ -15,9 +15,9 @@ import java.util.ArrayList;
 /**
  * Created by Влад on 24.10.2016.
  */
-public class StudentAdapter extends ArrayAdapter<Student> {
+public class StudentListAdapter extends ArrayAdapter<Student> {
 
-    public StudentAdapter(Context context, ArrayList<Student> objects) {
+    public StudentListAdapter(Context context, ArrayList<Student> objects) {
         super(context, 0, objects);
     }
 
