@@ -52,11 +52,11 @@ public class RecyclerViewFragment extends Fragment {
         students.add(new Student("Volodymyr Lymar", "https://github.com/VovanNec", "https://plus.google.com/u/0/109227554979939957830"));
 
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
-        recyclerView.setHasFixedSize(true);
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        RecyclerView.Adapter adapter = new StudentRecyclerAdapter((Student[])students.toArray());
+
+        RecyclerView.Adapter adapter = new StudentRecyclerAdapter(students);
         recyclerView.setAdapter(adapter);
         return rootView;
     }
