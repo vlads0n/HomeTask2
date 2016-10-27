@@ -1,4 +1,4 @@
-package app.com.example.android.hometask2;
+package app.com.example.android.hometask2.recyclerView;
 
 
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import app.com.example.android.hometask2.R;
+import app.com.example.android.hometask2.model.Student;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package app.com.example.android.hometask2;
+package app.com.example.android.hometask2.listView;
 
 
 import android.content.Intent;
@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import app.com.example.android.hometask2.R;
+import app.com.example.android.hometask2.model.Student;
 
 import java.util.ArrayList;
 
@@ -67,7 +69,6 @@ public class ListViewFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
         return rootView;
     }
 

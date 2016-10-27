@@ -1,4 +1,4 @@
-package app.com.example.android.hometask2;
+package app.com.example.android.hometask2.model;
 
 /**
  * Created by Влад on 24.10.2016.

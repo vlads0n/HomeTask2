@@ -1,4 +1,4 @@
-package app.com.example.android.hometask2;
+package app.com.example.android.hometask2.recyclerView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import app.com.example.android.hometask2.R;
+import app.com.example.android.hometask2.model.Student;
 
 import java.util.ArrayList;
 
