@@ -1,9 +1,13 @@
 package app.com.example.android.hometask2;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -15,12 +19,40 @@ public class StudentRecyclerAdapter extends RecyclerView.Adapter<StudentRecycler
 
     private ArrayList<Student> students;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public TextView studentName;
+        public Button button;
 
         public ViewHolder(View itemView) {
             super(itemView);
             this.studentName = (TextView) itemView.findViewById(R.id.name_student);
+            this.button = (Button) itemView.findViewById(R.id.git_button);
+
+            studentName.setOnClickListener(this);
+            button.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            switch (v.getId()) {
+                case R.id.name_student:
+                    itemClick(v.getContext(), position);
+                    break;
+                case R.id.git_button:
+                    buttonClick(v.getContext(), position);
+
+            }
+        }
+
+        public void itemClick(Context context, int position) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(students.get(position).getAccount()));
+            context.startActivity(intent);
+        }
+
+        public void buttonClick(Context context, int position) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(students.get(position).getGit()));
+            context.startActivity(intent);
         }
     }
 
@@ -48,4 +80,5 @@ public class StudentRecyclerAdapter extends RecyclerView.Adapter<StudentRecycler
     public int getItemCount() {
         return students.size();
     }
+
 }
