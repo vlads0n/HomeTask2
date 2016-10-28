@@ -6,10 +6,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 import app.com.example.android.hometask2.R;
 import app.com.example.android.hometask2.model.Student;
 
@@ -57,7 +59,7 @@ public class ListViewFragment extends Fragment {
 
         StudentListAdapter studentListAdapter = new StudentListAdapter(getActivity(), students);
 
-        ListView listView = (ListView) rootView.findViewById(R.id.students_list);
+        final ListView listView = (ListView) rootView.findViewById(R.id.students_list);
         listView.setAdapter(studentListAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -67,6 +69,36 @@ public class ListViewFragment extends Fragment {
 
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(student.getAccount()));
                 startActivity(intent);
+            }
+        });
+
+        listView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                int DELTA = 50;
+                float historicX = Float.NaN;
+                float historicY = Float.NaN;
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        historicX = motionEvent.getX();
+                        historicY = motionEvent.getY();
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        if (motionEvent.getX() - historicX < - DELTA) {
+                            Toast.makeText(getContext(), "Swipe left", Toast.LENGTH_LONG).show();
+                            return true;
+                        }
+                        else if (motionEvent.getX() - historicX > DELTA) {
+                            Toast.makeText(getContext(), "Swipe right", Toast.LENGTH_LONG).show();
+                            return true;
+                        }
+                        break;
+
+                    default:
+                        return false;
+                }
+                return false;
             }
         });
         return rootView;

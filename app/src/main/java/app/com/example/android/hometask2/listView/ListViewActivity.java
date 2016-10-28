@@ -12,7 +12,7 @@ public class ListViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list_view);
 
         ListViewFragment listViewFragment = new ListViewFragment();
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, listViewFragment).commit();
+        if (savedInstanceState == null)
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, listViewFragment).commit();
     }
 }
