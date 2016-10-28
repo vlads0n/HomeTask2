@@ -1,10 +1,10 @@
 package app.com.example.android.hometask2.recyclerView;
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +13,13 @@ import app.com.example.android.hometask2.model.Student;
 
 import java.util.ArrayList;
 
-
 /**
  * A simple {@link Fragment} subclass.
  */
 public class RecyclerViewFragment extends Fragment {
 
+    View rootView;
+    RecyclerView.Adapter adapter;
 
     public RecyclerViewFragment() {
         // Required empty public constructor
@@ -29,7 +30,7 @@ public class RecyclerViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_recycler_view, container, false);
+        rootView = inflater.inflate(R.layout.fragment_recycler_view, container, false);
 
         final ArrayList<Student> students = new ArrayList<>();
         students.add(new Student("Vladyslav Vynnyk", "https://github.com/vlads0n", "https://plus.google.com/u/0/117765348335292685488"));
@@ -58,9 +59,13 @@ public class RecyclerViewFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        RecyclerView.Adapter adapter = new StudentRecyclerAdapter(students);
+        adapter = new StudentRecyclerAdapter(students, rootView);
         recyclerView.setAdapter(adapter);
+
+        ItemTouchHelper.Callback callback = new SwipeHelper((StudentRecyclerAdapter) adapter);
+        ItemTouchHelper helper = new ItemTouchHelper(callback);
+        helper.attachToRecyclerView(recyclerView);
+
         return rootView;
     }
-
 }

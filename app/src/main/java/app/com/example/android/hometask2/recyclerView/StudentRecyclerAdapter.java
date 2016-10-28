@@ -3,6 +3,7 @@ package app.com.example.android.hometask2.recyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,9 @@ import java.util.ArrayList;
 public class StudentRecyclerAdapter extends RecyclerView.Adapter<StudentRecyclerAdapter.ViewHolder> {
 
     private ArrayList<Student> students;
+    int positionDeletedStudent;
+    Student deletedStudent;
+    View rootView;
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public TextView studentName;
@@ -58,8 +62,9 @@ public class StudentRecyclerAdapter extends RecyclerView.Adapter<StudentRecycler
         }
     }
 
-    public StudentRecyclerAdapter(ArrayList<Student> students) {
+    public StudentRecyclerAdapter(ArrayList<Student> students, View rootView) {
         this.students = students;
+        this.rootView = rootView;
     }
 
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -83,4 +88,30 @@ public class StudentRecyclerAdapter extends RecyclerView.Adapter<StudentRecycler
         return students.size();
     }
 
+    public void dismissStudent(int position){
+        deletedStudent = students.get(position);
+        positionDeletedStudent = position;
+        students.remove(position);
+        this.notifyItemRemoved(position);
+        showSnackBar();
+    }
+
+    public void undoDismissStudent() {
+        students.add(positionDeletedStudent, deletedStudent);
+        this.notifyItemInserted(positionDeletedStudent);
+    }
+
+    public void showSnackBar() {
+        Snackbar snackbar = Snackbar
+                .make(rootView, "Student is deleted", Snackbar.LENGTH_LONG)
+                .setAction("UNDO", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        undoDismissStudent();
+                        Snackbar snackbar1 = Snackbar.make(rootView, "Student is restored!", Snackbar.LENGTH_SHORT);
+                        snackbar1.show();
+                    }
+                });
+        snackbar.show();
+    }
 }

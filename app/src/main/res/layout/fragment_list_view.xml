@@ -5,5 +5,5 @@
         android:layout_height="match_parent"
         android:id="@+id/students_list"
         android:orientation="vertical"
-        android:focusable="true">
+        >
 </ListView>

@@ -4,6 +4,7 @@ package app.com.example.android.hometask2.listView;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -11,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 import app.com.example.android.hometask2.R;
 import app.com.example.android.hometask2.model.Student;
 
@@ -33,7 +33,7 @@ public class ListViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_list_view, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_list_view, container, false);
 
         final ArrayList<Student> students = new ArrayList<>();
         students.add(new Student("Vladyslav Vynnyk", "https://github.com/vlads0n", "https://plus.google.com/u/0/117765348335292685488"));
@@ -57,48 +57,51 @@ public class ListViewFragment extends Fragment {
         students.add(new Student("Mykola Pikhmanec", "https://github.com/NikPikhmanets", "https://plus.google.com/u/0/110087894894730430086"));
         students.add(new Student("Volodymyr Lymar", "https://github.com/VovanNec", "https://plus.google.com/u/0/109227554979939957830"));
 
-        StudentListAdapter studentListAdapter = new StudentListAdapter(getActivity(), students);
+        final StudentListAdapter studentListAdapter = new StudentListAdapter(getActivity(), students);
 
         final ListView listView = (ListView) rootView.findViewById(R.id.students_list);
         listView.setAdapter(studentListAdapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnTouchListener(new View.OnTouchListener() {
+            float x = Float.NaN;
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_UP:
+                        x = motionEvent.getX();
+                        break;
+                    case MotionEvent.ACTION_DOWN:
+                        if (motionEvent.getX() - x < - 250 || motionEvent.getX() - x > 250) {
+                            final Student deleteStudent = students.get(view.getVerticalScrollbarPosition());
+                            students.remove(view.getVerticalScrollbarPosition());
+                            studentListAdapter.notifyDataSetChanged();
+                            Snackbar snackbar = Snackbar
+                                    .make(rootView, "Student is deleted", Snackbar.LENGTH_LONG)
+                                    .setAction("UNDO", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            students.add(view.getVerticalScrollbarPosition(), deleteStudent);
+                                            studentListAdapter.notifyDataSetChanged();
+                                            Snackbar snackbar1 = Snackbar.make(rootView, "Student is restored!", Snackbar.LENGTH_SHORT);
+                                            snackbar1.show();
+                                        }
+                                    });
+                            snackbar.show();
+                            return true;
+                        }
+                }
+                return false;
+            }
+        });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Student student = students.get(position);
 
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(student.getAccount()));
                 startActivity(intent);
-            }
-        });
-
-        listView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                int DELTA = 50;
-                float historicX = Float.NaN;
-                float historicY = Float.NaN;
-                switch (motionEvent.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        historicX = motionEvent.getX();
-                        historicY = motionEvent.getY();
-                        break;
-
-                    case MotionEvent.ACTION_UP:
-                        if (motionEvent.getX() - historicX < - DELTA) {
-                            Toast.makeText(getContext(), "Swipe left", Toast.LENGTH_LONG).show();
-                            return true;
-                        }
-                        else if (motionEvent.getX() - historicX > DELTA) {
-                            Toast.makeText(getContext(), "Swipe right", Toast.LENGTH_LONG).show();
-                            return true;
-                        }
-                        break;
-
-                    default:
-                        return false;
-                }
-                return false;
+                return true;
             }
         });
         return rootView;
