@@ -19,6 +19,8 @@
         </activity>
         <activity android:name=".recyclerView.RecyclerViewActivity">
         </activity>
+        <activity android:name=".AccountGPlusActivity">
+        </activity>
     </application>
 
 </manifest>

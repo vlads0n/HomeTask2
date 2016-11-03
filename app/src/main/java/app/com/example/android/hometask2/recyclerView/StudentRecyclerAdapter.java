@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import app.com.example.android.hometask2.AccountGPlusActivity;
 import app.com.example.android.hometask2.R;
 import app.com.example.android.hometask2.model.Student;
 
@@ -52,7 +53,7 @@ public class StudentRecyclerAdapter extends RecyclerView.Adapter<StudentRecycler
         }
 
         public void itemClick(Context context, int position) {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(students.get(position).getAccount()));
+            Intent intent = new Intent(context, AccountGPlusActivity.class).putExtra(Intent.EXTRA_TEXT, students.get(position).getAccount());
             context.startActivity(intent);
         }
 
