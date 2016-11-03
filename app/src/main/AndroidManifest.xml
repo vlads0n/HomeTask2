@@ -19,9 +19,9 @@
         </activity>
         <activity android:name=".recyclerView.RecyclerViewActivity">
         </activity>
-        <activity android:name=".view.AccountGPlusActivity">
+        <activity android:name=".AccountGPlusActivity">
         </activity>
-        <activity android:name=".view.AccountGitActivity">
+        <activity android:name=".AccountGitActivity">
         </activity>
     </application>
 

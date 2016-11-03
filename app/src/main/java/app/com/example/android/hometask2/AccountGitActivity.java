@@ -1,9 +1,8 @@
-package app.com.example.android.hometask2.view;
+package app.com.example.android.hometask2;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import app.com.example.android.hometask2.R;
 
 public class AccountGitActivity extends AppCompatActivity {
 
