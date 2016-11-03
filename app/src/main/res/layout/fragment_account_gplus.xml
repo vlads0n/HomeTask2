@@ -5,7 +5,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
-        tools:context="app.com.example.android.hometask2.AccountGPlusFragment">
+        tools:context=".view.AccountGPlusFragment">
 
     <ImageView
             android:layout_width="100dp"

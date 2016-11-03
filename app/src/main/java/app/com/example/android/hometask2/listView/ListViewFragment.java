@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import app.com.example.android.hometask2.AccountGPlusActivity;
+import app.com.example.android.hometask2.view.AccountGPlusActivity;
 import app.com.example.android.hometask2.R;
 import app.com.example.android.hometask2.model.Student;
 
