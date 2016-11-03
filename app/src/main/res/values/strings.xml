@@ -1,8 +1,6 @@
 <resources>
-    <string name="app_name">Home Task 2</string>
+    <string name="app_name">GeekHub Android Students List</string>
 
     <string name="button_title">Git</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -1,4 +1,4 @@
-package app.com.example.android.hometask2;
+package app.com.example.android.hometask2.util;
 
 import android.net.Uri;
 import android.os.AsyncTask;
