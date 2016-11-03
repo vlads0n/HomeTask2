@@ -2,7 +2,6 @@ package app.com.example.android.hometask2.recyclerView;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import app.com.example.android.hometask2.AccountGPlusActivity;
+import app.com.example.android.hometask2.AccountGitActivity;
 import app.com.example.android.hometask2.R;
 import app.com.example.android.hometask2.model.Student;
 
@@ -58,7 +58,7 @@ public class StudentRecyclerAdapter extends RecyclerView.Adapter<StudentRecycler
         }
 
         public void buttonClick(Context context, int position) {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(students.get(position).getGit()));
+            Intent intent = new Intent(context, AccountGitActivity.class).putExtra(Intent.EXTRA_TEXT, students.get(position).getGit());
             context.startActivity(intent);
         }
     }

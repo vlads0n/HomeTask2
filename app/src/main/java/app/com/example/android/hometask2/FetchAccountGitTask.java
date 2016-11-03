@@ -2,7 +2,6 @@ package app.com.example.android.hometask2;
 
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -11,25 +10,21 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-
 /**
- * Created by Влад on 01.11.2016.
+ * Created by Влад on 03.11.2016.
  */
-public class FetchAccountTask extends AsyncTask<String, Void, String[]> {
-    private static final String KEY = "AIzaSyCanY1NXsBG4o5tmH9aGv5g04QQt-foH-o";
-    private static final String ACCOUNT_BASE_URL = "https://www.googleapis.com/plus/v1/people/";
-    private final String KEY_PARAM = "key";
+public class FetchAccountGitTask extends AsyncTask<String, Void, String[]> {
+    private static final String ACCOUNT_BASE_URL = "https://api.github.com/users/";
 
     @Override
     protected String[] doInBackground(String... params) {
-        Uri uri = Uri.parse(ACCOUNT_BASE_URL).buildUpon().appendPath(params[0]).appendQueryParameter(KEY_PARAM, KEY).build();
+        Uri uri = Uri.parse(ACCOUNT_BASE_URL).buildUpon().appendPath(params[0]).build();
         StringBuilder stringBuilder = new StringBuilder();
+
         HttpURLConnection urlConnection = null;
 
         try {
             URL url = new URL(uri.toString());
-
-            Log.v("LOG:" , url.toString());
 
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
@@ -49,27 +44,21 @@ public class FetchAccountTask extends AsyncTask<String, Void, String[]> {
         }
 
         String[] result = getAccountDataFromJSON(stringBuilder.toString());
-        for (String string : result)
-            Log.v("LOG:", string);
+
         return result;
     }
 
     private String[] getAccountDataFromJSON(String accountJSONStr){
-        final String OWM_IMAGE_LIST = "image";
-        final String OWM_NAME_LIST = "name";
-        final String OWM_SURNAME = "familyName";
-        final String OWM_NAME = "givenName";
+        final String OWM_IMAGE = "avatar_url";
+        final String OWM_NAME = "name";
+        final String OWM_LOGIN = "login";
         String[] studentInfo = new String[3];
 
         try {
             JSONObject jsonObject = new JSONObject(accountJSONStr);
-            JSONObject image = jsonObject.getJSONObject(OWM_IMAGE_LIST);
-            String OWM_IMAGE_URL = "url";
-            studentInfo[0] = image.getString(OWM_IMAGE_URL);
-
-            JSONObject student = jsonObject.getJSONObject(OWM_NAME_LIST);
-            studentInfo[1] = student.getString(OWM_NAME);
-            studentInfo[2] = student.getString(OWM_SURNAME);
+            studentInfo[0] = jsonObject.getString(OWM_IMAGE);
+            studentInfo[1] = jsonObject.getString(OWM_NAME);
+            studentInfo[2] = jsonObject.getString(OWM_LOGIN);
         } catch (JSONException e) {
         }
         return studentInfo;

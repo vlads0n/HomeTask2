@@ -34,26 +34,26 @@ public class ListViewFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_list_view, container, false);
 
         final ArrayList<Student> students = new ArrayList<>();
-        students.add(new Student("Vladyslav Vynnyk", "https://github.com/vlads0n", "117765348335292685488"));
-        students.add(new Student("Michael Tyoply", "https://github.com/RedGeekPanda", "110313151428733681846"));
-        students.add(new Student("Bogdan Rybak", "https://github.com/BogdanRybak1996", "103145064185261665176"));
-        students.add(new Student("Ivan Leschenko", "https://github.com/ivleshch", "111088051831122657934"));
-        students.add(new Student("Pavlo Sakurov", "https://github.com/sakurov", "108482088578879737406"));
-        students.add(new Student("Ruslan Volovyk", "https://github.com/RuslanVolovyk", "109719711261293841416"));
-        students.add(new Student("Daria Kyrychenko", "https://github.com/dashakdsr", "103130382244571139113"));
-        students.add(new Student("Andriy Ryabko", "https://github.com/RyabkoAndrew", "110288437168771810002"));
-        students.add(new Student("Evgeniy Sytnyk", "https://github.com/YevheniiSytnyk", "101427598085441575303"));
-        students.add(new Student("Edgar Khimich", "https://github.com/lyfm", "102197104589432395674"));
-        students.add(new Student("Alyona Bochkaryouva", "https://github.com/HelenCool", "107382407687723634701"));
-        students.add(new Student("Ruslan Mygal", "https://github.com/rmigal", "106331812587299981536"));
-        students.add(new Student("Iryna Smalko", "https://github.com/IraSmalko", "113994208318508685327"));
-        students.add(new Student("Valeriy Gubskiy", "https://github.com/gvv-ua", "107910188078571144657"));
-        students.add(new Student("Evgen Zhdanov", "https://github.com/zhdanov-ek", "113264746064942658029"));
-        students.add(new Student("Ivan Sergienko", "https://github.com/dogfight81", "111389859649705526831"));
-        students.add(new Student("Igor Paharenko", "https://github.com/IhorPakharenko", "108231952557339738781"));
-        students.add(new Student("Oleksandr Storchak", "https://github.com/new15", "106553086375805780685"));
-        students.add(new Student("Mykola Pikhmanec", "https://github.com/NikPikhmanets", "110087894894730430086"));
-        students.add(new Student("Volodymyr Lymar", "https://github.com/VovanNec", "109227554979939957830"));
+        students.add(new Student("Vladyslav Vynnyk", "vlads0n", "117765348335292685488"));
+        students.add(new Student("Michael Tyoply", "RedGeekPanda", "110313151428733681846"));
+        students.add(new Student("Bogdan Rybak", "BogdanRybak1996", "103145064185261665176"));
+        students.add(new Student("Ivan Leschenko", "ivleshch", "111088051831122657934"));
+        students.add(new Student("Pavlo Sakurov", "sakurov", "108482088578879737406"));
+        students.add(new Student("Ruslan Volovyk", "RuslanVolovyk", "109719711261293841416"));
+        students.add(new Student("Daria Kyrychenko", "dashakdsr", "103130382244571139113"));
+        students.add(new Student("Andriy Ryabko", "RyabkoAndrew", "110288437168771810002"));
+        students.add(new Student("Evgeniy Sytnyk", "YevheniiSytnyk", "101427598085441575303"));
+        students.add(new Student("Edgar Khimich", "lyfm", "102197104589432395674"));
+        students.add(new Student("Alyona Bochkaryouva", "HelenCool", "107382407687723634701"));
+        students.add(new Student("Ruslan Mygal", "rmigal", "106331812587299981536"));
+        students.add(new Student("Iryna Smalko", "IraSmalko", "113994208318508685327"));
+        students.add(new Student("Valeriy Gubskiy", "gvv-ua", "107910188078571144657"));
+        students.add(new Student("Evgen Zhdanov", "zhdanov-ek", "113264746064942658029"));
+        students.add(new Student("Ivan Sergienko", "dogfight81", "111389859649705526831"));
+        students.add(new Student("Igor Paharenko", "IhorPakharenko", "108231952557339738781"));
+        students.add(new Student("Oleksandr Storchak", "new15", "106553086375805780685"));
+        students.add(new Student("Mykola Pikhmanec", "NikPikhmanets", "110087894894730430086"));
+        students.add(new Student("Volodymyr Lymar", "VovanNec", "109227554979939957830"));
 
         final StudentListAdapter studentListAdapter = new StudentListAdapter(getActivity(), students);
 

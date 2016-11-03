@@ -15,10 +15,10 @@ import android.widget.TextView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AccountGPlusFragment extends Fragment {
+public class AccountGitFragment extends Fragment {
 
 
-    public AccountGPlusFragment() {
+    public AccountGitFragment() {
         // Required empty public constructor
     }
 
@@ -27,18 +27,17 @@ public class AccountGPlusFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_account_gplus, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_account_git, container, false);
 
         Intent intent = getActivity().getIntent();
-        FetchAccountGoogleTask fetchAccountGoogleTask = new FetchAccountGoogleTask();
+        FetchAccountGitTask fetchAccountGitTask = new FetchAccountGitTask();
 
-        if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
-            fetchAccountGoogleTask.execute(intent.getStringExtra(Intent.EXTRA_TEXT));
-        }
+        if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT))
+            fetchAccountGitTask.execute(intent.getStringExtra(Intent.EXTRA_TEXT));
 
         String[] studentInfo = null;
         try {
-            studentInfo = fetchAccountGoogleTask.get();
+            studentInfo = fetchAccountGitTask.get();
         }
         catch (Exception e) {}
 
@@ -48,23 +47,23 @@ public class AccountGPlusFragment extends Fragment {
                 fetchImageTask.execute();
                 try {
                     Bitmap bitmap = fetchImageTask.get();
-                    ImageView imageView = (ImageView) rootView.findViewById(R.id.student_account_gplus_image);
+                    ImageView imageView = (ImageView) rootView.findViewById(R.id.student_account_git_image);
                     imageView.setImageBitmap(bitmap);
                 } catch (Exception e) {
                 }
             }
 
-            TextView name = (TextView) rootView.findViewById(R.id.student_account_gplus_name);
+            TextView name = (TextView) rootView.findViewById(R.id.student_account_git_name);
             if (!studentInfo[1].equals("null"))
                 name.setText(studentInfo[1]);
             else
                 name.setText("");
 
-            TextView surname = (TextView) rootView.findViewById(R.id.student_account_gplus_surname);
+            TextView login = (TextView) rootView.findViewById(R.id.student_account_git_login);
             if (!studentInfo[2].equals("null"))
-                surname.setText(studentInfo[2]);
+                login.setText(studentInfo[2]);
             else
-                surname.setText("");
+                login.setText("");
         }
         return rootView;
     }

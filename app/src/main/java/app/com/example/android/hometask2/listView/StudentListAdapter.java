@@ -2,13 +2,13 @@ package app.com.example.android.hometask2.listView;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import app.com.example.android.hometask2.AccountGitActivity;
 import app.com.example.android.hometask2.R;
 import app.com.example.android.hometask2.model.Student;
 
@@ -40,7 +40,7 @@ public class StudentListAdapter extends ArrayAdapter<Student> {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(currentStudent.getGit()));
+                Intent intent = new Intent(getContext(), AccountGitActivity.class).putExtra(Intent.EXTRA_TEXT, currentStudent.getGit());
                 getContext().startActivity(intent);
             }
         });
