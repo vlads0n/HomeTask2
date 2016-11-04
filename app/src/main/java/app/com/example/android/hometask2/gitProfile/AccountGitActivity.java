@@ -1,4 +1,4 @@
-package app.com.example.android.hometask2.view;
+package app.com.example.android.hometask2.gitProfile;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

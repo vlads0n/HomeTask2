@@ -1,4 +1,4 @@
-package app.com.example.android.hometask2.view;
+package app.com.example.android.hometask2.gitProfile;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
