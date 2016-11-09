@@ -1,5 +1,6 @@
 package app.com.example.android.hometask2.recyclerView;
 
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +9,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import app.com.example.android.hometask2.broadcastReceiver.HeadsetReceiver;
 import app.com.example.android.hometask2.R;
 import app.com.example.android.hometask2.model.Student;
 
@@ -20,6 +22,7 @@ public class RecyclerViewFragment extends Fragment {
 
     View rootView;
     RecyclerView.Adapter adapter;
+    HeadsetReceiver headsetReceiver;
 
     public RecyclerViewFragment() {
         // Required empty public constructor
@@ -67,5 +70,18 @@ public class RecyclerViewFragment extends Fragment {
         helper.attachToRecyclerView(recyclerView);
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        headsetReceiver = new HeadsetReceiver();
+        getActivity().registerReceiver(headsetReceiver, new IntentFilter("android.intent.action.HEADSET_PLUG"));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().unregisterReceiver(headsetReceiver);
     }
 }

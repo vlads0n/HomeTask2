@@ -2,6 +2,7 @@ package app.com.example.android.hometask2.listView;
 
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,8 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import app.com.example.android.hometask2.gplusProfile.AccountGPlusActivity;
+import app.com.example.android.hometask2.broadcastReceiver.HeadsetReceiver;
 import app.com.example.android.hometask2.R;
+import app.com.example.android.hometask2.gplusProfile.AccountGPlusActivity;
 import app.com.example.android.hometask2.model.Student;
 
 import java.util.ArrayList;
@@ -20,7 +22,7 @@ import java.util.ArrayList;
  * A simple {@link Fragment} subclass.
  */
 public class ListViewFragment extends Fragment {
-
+    HeadsetReceiver headsetReceiver;
 
     public ListViewFragment() {
         // Required empty public constructor
@@ -103,4 +105,16 @@ public class ListViewFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        headsetReceiver = new HeadsetReceiver();
+        getActivity().registerReceiver(headsetReceiver, new IntentFilter("android.intent.action.HEADSET_PLUG"));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().unregisterReceiver(headsetReceiver);
+    }
 }
