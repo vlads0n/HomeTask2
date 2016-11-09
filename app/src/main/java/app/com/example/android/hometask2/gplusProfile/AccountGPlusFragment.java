@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import app.com.example.android.hometask2.R;
 import app.com.example.android.hometask2.util.FetchAccountGoogleTask;
 import app.com.example.android.hometask2.util.FetchImageTask;
@@ -33,9 +34,10 @@ public class AccountGPlusFragment extends Fragment {
         Intent intent = getActivity().getIntent();
         FetchAccountGoogleTask fetchAccountGoogleTask = new FetchAccountGoogleTask();
 
-        if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
+        if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT))
             fetchAccountGoogleTask.execute(intent.getStringExtra(Intent.EXTRA_TEXT));
-        }
+        else if (intent.getData().getHost().equals("plus.google.com"))
+            fetchAccountGoogleTask.execute(intent.getData().getLastPathSegment());
 
         String[] studentInfo = null;
         try {
@@ -43,7 +45,7 @@ public class AccountGPlusFragment extends Fragment {
         }
         catch (Exception e) {}
 
-        if (studentInfo != null) {
+        if (studentInfo != null && studentInfo[0] != null) {
             if (!studentInfo[0].equals("null")) {
                 FetchImageTask fetchImageTask = new FetchImageTask(studentInfo[0]);
                 fetchImageTask.execute();
@@ -66,6 +68,11 @@ public class AccountGPlusFragment extends Fragment {
                 surname.setText(studentInfo[2]);
             else
                 surname.setText("");
+        }
+        else {
+            Intent intent1 = new Intent(Intent.ACTION_VIEW, intent.getData());
+            Toast.makeText(getContext(), "Invalid link!!! Choose another browser.", Toast.LENGTH_LONG).show();
+            startActivity(intent1);
         }
         return rootView;
     }

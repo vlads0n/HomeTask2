@@ -20,8 +20,18 @@
         <activity android:name=".recyclerView.RecyclerViewActivity">
         </activity>
         <activity android:name=".gplusProfile.AccountGPlusActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <data android:scheme="https" android:host="plus.google.com"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
         </activity>
         <activity android:name=".gitProfile.AccountGitActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <data android:scheme="https" android:host="github.com"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
         </activity>
         <activity android:name=".getPhoto.GetPhotoActivity">
         </activity>
