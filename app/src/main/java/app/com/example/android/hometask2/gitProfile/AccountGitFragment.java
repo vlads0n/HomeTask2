@@ -24,6 +24,7 @@ import app.com.example.android.hometask2.util.FetchImageTask;
 public class AccountGitFragment extends Fragment {
     HeadsetReceiver headsetReceiver;
     PowerReceiver powerReceiver;
+    boolean invalidLink;
 
     public AccountGitFragment() {
         // Required empty public constructor
@@ -45,9 +46,8 @@ public class AccountGitFragment extends Fragment {
             if (intent.getData().getPathSegments().size() == 1)
                 fetchAccountGitTask.execute(intent.getData().getLastPathSegment());
             else {
-                Intent intent1 = new Intent(Intent.ACTION_VIEW, intent.getData());
-                Toast.makeText(getContext(), "Invalid link!!! Choose another browser.", Toast.LENGTH_LONG).show();
-                startActivity(intent1);
+                fetchAccountGitTask.execute(intent.getData().getLastPathSegment());
+                invalidLink = true;
             }
         }
 
@@ -57,7 +57,7 @@ public class AccountGitFragment extends Fragment {
         }
         catch (Exception e) {}
 
-        if (studentInfo != null) {
+        if (studentInfo != null && !invalidLink) {
             if (!studentInfo[0].equals("null")) {
                 FetchImageTask fetchImageTask = new FetchImageTask(studentInfo[0]);
                 fetchImageTask.execute();
@@ -80,6 +80,11 @@ public class AccountGitFragment extends Fragment {
                 login.setText(studentInfo[2]);
             else
                 login.setText("");
+        }
+        else {
+            Intent intent1 = new Intent(Intent.ACTION_VIEW, intent.getData());
+            Toast.makeText(getContext(), "Invalid link!!! Choose another browser.", Toast.LENGTH_LONG).show();
+            startActivity(intent1);
         }
         return rootView;
     }

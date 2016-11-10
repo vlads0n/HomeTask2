@@ -85,6 +85,7 @@ public class AccountGPlusFragment extends Fragment {
     public void onResume() {
         super.onResume();
         headsetReceiver = new HeadsetReceiver();
+        powerReceiver = new PowerReceiver();
         getActivity().registerReceiver(headsetReceiver, new IntentFilter("android.intent.action.HEADSET_PLUG"));
         getActivity().registerReceiver(powerReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
     }
