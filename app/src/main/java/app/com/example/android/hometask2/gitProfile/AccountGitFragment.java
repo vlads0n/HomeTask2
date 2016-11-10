@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import app.com.example.android.hometask2.R;
 import app.com.example.android.hometask2.broadcastReceiver.HeadsetReceiver;
+import app.com.example.android.hometask2.broadcastReceiver.PowerReceiver;
 import app.com.example.android.hometask2.util.FetchAccountGitTask;
 import app.com.example.android.hometask2.util.FetchImageTask;
 
@@ -22,6 +23,7 @@ import app.com.example.android.hometask2.util.FetchImageTask;
  */
 public class AccountGitFragment extends Fragment {
     HeadsetReceiver headsetReceiver;
+    PowerReceiver powerReceiver;
 
     public AccountGitFragment() {
         // Required empty public constructor
@@ -86,13 +88,16 @@ public class AccountGitFragment extends Fragment {
     public void onResume() {
         super.onResume();
         headsetReceiver = new HeadsetReceiver();
+        powerReceiver = new PowerReceiver();
         getActivity().registerReceiver(headsetReceiver, new IntentFilter("android.intent.action.HEADSET_PLUG"));
+        getActivity().registerReceiver(powerReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
     }
 
     @Override
     public void onPause() {
         super.onPause();
         getActivity().unregisterReceiver(headsetReceiver);
+        getActivity().unregisterReceiver(powerReceiver);
     }
 
 }

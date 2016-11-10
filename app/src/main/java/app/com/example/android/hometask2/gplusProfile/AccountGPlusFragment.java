@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import app.com.example.android.hometask2.R;
 import app.com.example.android.hometask2.broadcastReceiver.HeadsetReceiver;
+import app.com.example.android.hometask2.broadcastReceiver.PowerReceiver;
 import app.com.example.android.hometask2.util.FetchAccountGoogleTask;
 import app.com.example.android.hometask2.util.FetchImageTask;
 
@@ -22,6 +23,7 @@ import app.com.example.android.hometask2.util.FetchImageTask;
  */
 public class AccountGPlusFragment extends Fragment {
     HeadsetReceiver headsetReceiver;
+    PowerReceiver powerReceiver;
 
     public AccountGPlusFragment() {
         // Required empty public constructor
@@ -84,11 +86,13 @@ public class AccountGPlusFragment extends Fragment {
         super.onResume();
         headsetReceiver = new HeadsetReceiver();
         getActivity().registerReceiver(headsetReceiver, new IntentFilter("android.intent.action.HEADSET_PLUG"));
+        getActivity().registerReceiver(powerReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
     }
 
     @Override
     public void onPause() {
         super.onPause();
         getActivity().unregisterReceiver(headsetReceiver);
+        getActivity().unregisterReceiver(powerReceiver);
     }
 }

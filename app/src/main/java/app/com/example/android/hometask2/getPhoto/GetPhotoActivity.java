@@ -10,15 +10,18 @@ import android.view.View;
 import android.widget.ImageView;
 import app.com.example.android.hometask2.R;
 import app.com.example.android.hometask2.broadcastReceiver.HeadsetReceiver;
+import app.com.example.android.hometask2.broadcastReceiver.PowerReceiver;
 
 public class GetPhotoActivity extends AppCompatActivity {
     ImageView imageView;
     HeadsetReceiver headsetReceiver;
+    PowerReceiver powerReceiver;
+    Bitmap bitmap;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+            bitmap = (Bitmap) data.getExtras().get("data");
             imageView.setImageBitmap(bitmap);
         }
     }
@@ -42,12 +45,27 @@ public class GetPhotoActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         headsetReceiver = new HeadsetReceiver();
+        powerReceiver = new PowerReceiver();
         registerReceiver(headsetReceiver, new IntentFilter("android.intent.action.HEADSET_PLUG"));
+        registerReceiver(powerReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         unregisterReceiver(headsetReceiver);
+        unregisterReceiver(powerReceiver);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("bitmap", bitmap);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        imageView.setImageBitmap((Bitmap) savedInstanceState.getParcelable("bitmap"));
     }
 }
