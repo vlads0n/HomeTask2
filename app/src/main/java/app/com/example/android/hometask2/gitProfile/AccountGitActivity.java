@@ -10,7 +10,7 @@ public class AccountGitActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_account_git);
+        setContentView(R.layout.activity);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         toolbar.setTitle("Git profile");

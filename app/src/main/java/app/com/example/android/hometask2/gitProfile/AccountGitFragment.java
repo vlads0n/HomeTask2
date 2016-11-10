@@ -1,6 +1,7 @@
 package app.com.example.android.hometask2.gitProfile;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import app.com.example.android.hometask2.R;
+import app.com.example.android.hometask2.broadcastReceiver.HeadsetReceiver;
 import app.com.example.android.hometask2.util.FetchAccountGitTask;
 import app.com.example.android.hometask2.util.FetchImageTask;
 
@@ -19,7 +21,7 @@ import app.com.example.android.hometask2.util.FetchImageTask;
  * A simple {@link Fragment} subclass.
  */
 public class AccountGitFragment extends Fragment {
-
+    HeadsetReceiver headsetReceiver;
 
     public AccountGitFragment() {
         // Required empty public constructor
@@ -78,6 +80,19 @@ public class AccountGitFragment extends Fragment {
                 login.setText("");
         }
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        headsetReceiver = new HeadsetReceiver();
+        getActivity().registerReceiver(headsetReceiver, new IntentFilter("android.intent.action.HEADSET_PLUG"));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().unregisterReceiver(headsetReceiver);
     }
 
 }

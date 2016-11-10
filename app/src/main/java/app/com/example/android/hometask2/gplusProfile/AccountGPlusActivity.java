@@ -10,7 +10,7 @@ public class AccountGPlusActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_account_gplus);
+        setContentView(R.layout.activity);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         toolbar.setTitle("G+ profile");
