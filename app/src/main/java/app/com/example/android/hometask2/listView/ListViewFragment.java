@@ -64,38 +64,6 @@ public class ListViewFragment extends Fragment {
         final ListView listView = (ListView) rootView.findViewById(R.id.students_list);
         listView.setAdapter(studentListAdapter);
 
-//        listView.setOnTouchListener(new View.OnTouchListener() {
-//            float x = Float.NaN;
-//            @Override
-//            public boolean onTouch(View view, MotionEvent motionEvent) {
-//                switch (motionEvent.getAction()) {
-//                    case MotionEvent.ACTION_UP:
-//                        x = motionEvent.getX();
-//                        break;
-//                    case MotionEvent.ACTION_DOWN:
-//                        if (motionEvent.getX() - x < - 250 || motionEvent.getX() - x > 250) {
-//                            final Student deleteStudent = students.get(view.getVerticalScrollbarPosition());
-//                            students.remove(view.getVerticalScrollbarPosition());
-//                            studentListAdapter.notifyDataSetChanged();
-//                            Snackbar snackbar = Snackbar
-//                                    .make(rootView, "Student is deleted", Snackbar.LENGTH_LONG)
-//                                    .setAction("UNDO", new View.OnClickListener() {
-//                                        @Override
-//                                        public void onClick(View view) {
-//                                            students.add(view.getVerticalScrollbarPosition(), deleteStudent);
-//                                            studentListAdapter.notifyDataSetChanged();
-//                                            Snackbar snackbar1 = Snackbar.make(rootView, "Student is restored!", Snackbar.LENGTH_SHORT);
-//                                            snackbar1.show();
-//                                        }
-//                                    });
-//                            snackbar.show();
-//                            return true;
-//                        }
-//                }
-//                return false;
-//            }
-//        });
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

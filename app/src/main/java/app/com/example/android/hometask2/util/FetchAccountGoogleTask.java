@@ -2,6 +2,7 @@ package app.com.example.android.hometask2.util;
 
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -46,6 +47,7 @@ public class FetchAccountGoogleTask extends AsyncTask<String, Void, String[]> {
         }
 
         String[] result = getAccountDataFromJSON(stringBuilder.toString());
+        Log.v("LOG:", stringBuilder.toString());
 
         return result;
     }
