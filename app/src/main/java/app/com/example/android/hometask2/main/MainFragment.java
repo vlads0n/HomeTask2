@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import app.com.example.android.hometask2.getContacts.GetContactsActivity;
 import app.com.example.android.hometask2.R;
 import app.com.example.android.hometask2.broadcastReceiver.HeadsetReceiver;
 import app.com.example.android.hometask2.broadcastReceiver.PowerReceiver;
@@ -58,6 +59,15 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), GetPhotoActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Button getContacts = (Button) rootView.findViewById(R.id.get_contacts_button);
+        getContacts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), GetContactsActivity.class);
                 startActivity(intent);
             }
         });

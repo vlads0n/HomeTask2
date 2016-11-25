@@ -8,8 +8,8 @@
         tools:context=".gitProfile.AccountGitFragment">
 
     <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:id="@+id/student_account_git_image"/>
 

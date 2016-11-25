@@ -3,6 +3,7 @@
           package="app.com.example.android.hometask2">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
 
     <application
             android:allowBackup="true"
@@ -45,6 +46,7 @@
         </activity>
         <activity android:name=".getPhoto.GetPhotoActivity">
         </activity>
+
         <receiver
                 android:name=".broadcastReceiver.HeadsetReceiver"
                 android:enabled="true">
@@ -52,13 +54,17 @@
                 <action android:name="android.intent.action.HEADSET_PLUG"/>
             </intent-filter>
         </receiver>
-        <receiver android:name=".broadcastReceiver.PowerReceiver"
-                  android:enabled="true">
+        <receiver
+                android:name=".broadcastReceiver.PowerReceiver"
+                android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
             </intent-filter>
         </receiver>
+
+        <activity android:name=".getContacts.GetContactsActivity">
+        </activity>
     </application>
 
 </manifest>

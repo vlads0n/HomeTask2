@@ -9,8 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import app.com.example.android.hometask2.ApiClient;
-import app.com.example.android.hometask2.ApiInterface;
+import app.com.example.android.hometask2.Api.ApiInterface;
+import app.com.example.android.hometask2.Api.GooglePlusApiClient;
 import app.com.example.android.hometask2.R;
 import app.com.example.android.hometask2.broadcastReceiver.HeadsetReceiver;
 import app.com.example.android.hometask2.broadcastReceiver.PowerReceiver;
@@ -40,48 +40,6 @@ public class AccountGPlusFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_account_gplus, container, false);
 
         Intent intent = getActivity().getIntent();
-//        FetchAccountGoogleTask fetchAccountGoogleTask = new FetchAccountGoogleTask();
-//
-//        if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT))
-//            fetchAccountGoogleTask.execute(intent.getStringExtra(Intent.EXTRA_TEXT));
-//        else if (intent.getData().getHost().equals("plus.google.com"))
-//            fetchAccountGoogleTask.execute(intent.getData().getLastPathSegment());
-//
-//        String[] studentInfo = null;
-//        try {
-//            studentInfo = fetchAccountGoogleTask.get();
-//        }
-//        catch (Exception e) {}
-
-//        if (studentInfo != null && studentInfo[0] != null) {
-//            if (!studentInfo[0].equals("null")) {
-//                FetchImageTask fetchImageTask = new FetchImageTask(studentInfo[0]);
-//                fetchImageTask.execute();
-//                try {
-//                    Bitmap bitmap = fetchImageTask.get();
-//                    ImageView imageView = (ImageView) rootView.findViewById(R.id.student_account_gplus_image);
-//                    imageView.setImageBitmap(bitmap);
-//                } catch (Exception e) {
-//                }
-//            }
-//
-//            TextView name = (TextView) rootView.findViewById(R.id.student_account_gplus_name);
-//            if (!studentInfo[1].equals("null"))
-//                name.setText(studentInfo[1]);
-//            else
-//                name.setText("");
-//
-//            TextView surname = (TextView) rootView.findViewById(R.id.student_account_gplus_surname);
-//            if (!studentInfo[2].equals("null"))
-//                surname.setText(studentInfo[2]);
-//            else
-//                surname.setText("");
-//        }
-//        else {
-//            Intent intent1 = new Intent(Intent.ACTION_VIEW, intent.getData());
-//            Toast.makeText(getContext(), "Invalid link!!! Choose another browser.", Toast.LENGTH_LONG).show();
-//            startActivity(intent1);
-//        }
 
         Call<StudentGoogleProfile> call = null;
         final ImageView imageView = (ImageView) rootView.findViewById(R.id.student_account_gplus_image);
@@ -89,16 +47,17 @@ public class AccountGPlusFragment extends Fragment {
         final TextView surname = (TextView) rootView.findViewById(R.id.student_account_gplus_surname);
 
         if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
-            ApiInterface apiInterface = new ApiClient(ApiClient.GOOGLE_PLUS).getClient().create(ApiInterface.class);
+            ApiInterface apiInterface = GooglePlusApiClient.getClient().create(ApiInterface.class);
             call = apiInterface.getStudentGoogleProfile(intent.getStringExtra(Intent.EXTRA_TEXT), API_KEY_GOOGLE_PLUS);
         }
 
         call.enqueue(new Callback<StudentGoogleProfile>() {
             @Override
             public void onResponse(Call<StudentGoogleProfile> call, Response<StudentGoogleProfile> response) {
-                name.setText(response.body().getName());
-                surname.setText(response.body().getSurname());
-                FetchImageTask fetchImageTask = new FetchImageTask(response.body().getImageUrl());
+                StudentGoogleProfile studentGoogleProfile = response.body();
+                name.setText(studentGoogleProfile.getName());
+                surname.setText(studentGoogleProfile.getSurname());
+                FetchImageTask fetchImageTask = new FetchImageTask(studentGoogleProfile.getImageUrl());
                 fetchImageTask.execute();
                 try {
                     imageView.setImageBitmap(fetchImageTask.get());

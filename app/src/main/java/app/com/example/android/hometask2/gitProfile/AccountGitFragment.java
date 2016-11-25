@@ -9,8 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import app.com.example.android.hometask2.ApiClient;
-import app.com.example.android.hometask2.ApiInterface;
+import app.com.example.android.hometask2.Api.ApiInterface;
+import app.com.example.android.hometask2.Api.GitHubApiClient;
 import app.com.example.android.hometask2.R;
 import app.com.example.android.hometask2.broadcastReceiver.HeadsetReceiver;
 import app.com.example.android.hometask2.broadcastReceiver.PowerReceiver;
@@ -41,54 +41,6 @@ public class AccountGitFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_account_git, container, false);
 
         Intent intent = getActivity().getIntent();
-//        FetchAccountGitTask fetchAccountGitTask = new FetchAccountGitTask();
-//
-//        if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT))
-//            fetchAccountGitTask.execute(intent.getStringExtra(Intent.EXTRA_TEXT));
-//        else if (intent.getData().getHost().equals("github.com")) {
-//            if (intent.getData().getPathSegments().size() == 1)
-//                fetchAccountGitTask.execute(intent.getData().getLastPathSegment());
-//            else {
-//                fetchAccountGitTask.execute(intent.getData().getLastPathSegment());
-//                invalidLink = true;
-//            }
-//        }
-//
-//        String[] studentInfo = null;
-//        try {
-//            studentInfo = fetchAccountGitTask.get();
-//        }
-//        catch (Exception e) {}
-//
-//        if (studentInfo != null && !invalidLink) {
-//            if (!studentInfo[0].equals("null")) {
-//                FetchImageTask fetchImageTask = new FetchImageTask(studentInfo[0]);
-//                fetchImageTask.execute();
-//                try {
-//                    Bitmap bitmap = fetchImageTask.get();
-//                    ImageView imageView = (ImageView) rootView.findViewById(R.id.student_account_git_image);
-//                    imageView.setImageBitmap(bitmap);
-//                } catch (Exception e) {
-//                }
-//            }
-//
-//            TextView name = (TextView) rootView.findViewById(R.id.student_account_git_name);
-//            if (!studentInfo[1].equals("null"))
-//                name.setText(studentInfo[1]);
-//            else
-//                name.setText("");
-//
-//            TextView login = (TextView) rootView.findViewById(R.id.student_account_git_login);
-//            if (!studentInfo[2].equals("null"))
-//                login.setText(studentInfo[2]);
-//            else
-//                login.setText("");
-//        }
-//        else {
-//            Intent intent1 = new Intent(Intent.ACTION_VIEW, intent.getData());
-//            Toast.makeText(getContext(), "Invalid link!!! Choose another browser.", Toast.LENGTH_LONG).show();
-//            startActivity(intent1);
-//        }
 
         Call<StudentGitProfile> call = null;
         final ImageView imageView = (ImageView) rootView.findViewById(R.id.student_account_git_image);
@@ -96,16 +48,17 @@ public class AccountGitFragment extends Fragment {
         final TextView login = (TextView) rootView.findViewById(R.id.student_account_git_login);
 
         if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
-            ApiInterface apiInterface = new ApiClient(ApiClient.GIT_HUB).getClient().create(ApiInterface.class);
+            ApiInterface apiInterface = GitHubApiClient.getClient().create(ApiInterface.class);
             call = apiInterface.getStudentGitHubProfile(intent.getStringExtra(Intent.EXTRA_TEXT));
         }
 
         call.enqueue(new Callback<StudentGitProfile>() {
             @Override
             public void onResponse(Call<StudentGitProfile> call, Response<StudentGitProfile> response) {
-                name.setText(response.body().getName());
-                login.setText(response.body().getLogin());
-                FetchImageTask fetchImageTask = new FetchImageTask(response.body().getAvatar());
+                StudentGitProfile studentGitProfile = response.body();
+                name.setText(studentGitProfile.getName());
+                login.setText(studentGitProfile.getLogin());
+                FetchImageTask fetchImageTask = new FetchImageTask(studentGitProfile.getAvatar());
                 fetchImageTask.execute();
                 try {
                     imageView.setImageBitmap(fetchImageTask.get());
@@ -117,6 +70,7 @@ public class AccountGitFragment extends Fragment {
 
             }
         });
+
         return rootView;
     }
 

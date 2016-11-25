@@ -1,4 +1,4 @@
-package app.com.example.android.hometask2;
+package app.com.example.android.hometask2.Api;
 
 import app.com.example.android.hometask2.model.StudentGitProfile;
 import app.com.example.android.hometask2.model.StudentGoogleProfile;
@@ -14,6 +14,6 @@ public interface ApiInterface {
     @GET("users/{user}")
     Call<StudentGitProfile> getStudentGitHubProfile(@Path("user") String user);
 
-    @GET("v1/people/{user}")
+    @GET("plus/v1/people/{user}")
     Call<StudentGoogleProfile> getStudentGoogleProfile(@Path("user") String user, @Query("key") String key);
 }

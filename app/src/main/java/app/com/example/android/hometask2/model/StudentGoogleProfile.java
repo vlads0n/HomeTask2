@@ -10,18 +10,20 @@ import java.util.List;
 public class StudentGoogleProfile {
     @SerializedName("nickname")
     private String login;
-    @SerializedName("familyName")
+    @SerializedName("name")
+    private List<String> listName;
     private String surname;
-    @SerializedName("givenName")
     private String name;
     @SerializedName("image")
     private List<String> listImage;
     private String imageUrl;
 
-    public StudentGoogleProfile(String login, String surname, String name, List<String> listImage) {
+
+    public StudentGoogleProfile(String login, List<String> listImage, List<String> listName) {
         this.login = login;
-        this.surname = surname;
-        this.name = name;
+        this.listName = listName;
+        this.surname = listName.get(0);
+        this.name = listName.get(1);
         this.listImage = listImage;
         this.imageUrl = listImage.get(0);
     }
