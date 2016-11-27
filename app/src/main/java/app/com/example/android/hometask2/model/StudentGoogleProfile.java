@@ -2,45 +2,32 @@ package app.com.example.android.hometask2.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
+import java.util.HashMap;
 
 /**
  * Created by Влад on 18.11.2016.
  */
 public class StudentGoogleProfile {
-    @SerializedName("nickname")
-    private String login;
     @SerializedName("name")
-    private List<String> listName;
-    private String surname;
-    private String name;
+    private HashMap<String, String> name;
     @SerializedName("image")
-    private List<String> listImage;
-    private String imageUrl;
+    private HashMap<String, String> image;
 
 
-    public StudentGoogleProfile(String login, List<String> listImage, List<String> listName) {
-        this.login = login;
-        this.listName = listName;
-        this.surname = listName.get(0);
-        this.name = listName.get(1);
-        this.listImage = listImage;
-        this.imageUrl = listImage.get(0);
-    }
-
-    public String getLogin() {
-        return login;
+    public StudentGoogleProfile(HashMap<String, String> image, HashMap<String, String> name) {
+        this.name = name;
+        this.image = image;
     }
 
     public String getSurname() {
-        return surname;
+        return name.get("familyName");
     }
 
     public String getName() {
-        return name;
+        return name.get("givenName");
     }
 
     public String getImageUrl() {
-        return imageUrl;
+         return image.get("url");
     }
 }

@@ -1,4 +1,4 @@
-package app.com.example.android.hometask2.Api;
+package app.com.example.android.hometask2.аpi;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -11,7 +11,6 @@ public class GitHubApiClient {
     private static Retrofit retrofit = null;
 
     public static Retrofit getClient() {
-        if (retrofit == null)
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL_GIT_HUB)
                     .addConverterFactory(GsonConverterFactory.create())

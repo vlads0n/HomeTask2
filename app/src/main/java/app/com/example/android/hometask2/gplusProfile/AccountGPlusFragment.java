@@ -4,18 +4,19 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import app.com.example.android.hometask2.Api.ApiInterface;
-import app.com.example.android.hometask2.Api.GooglePlusApiClient;
 import app.com.example.android.hometask2.R;
 import app.com.example.android.hometask2.broadcastReceiver.HeadsetReceiver;
 import app.com.example.android.hometask2.broadcastReceiver.PowerReceiver;
 import app.com.example.android.hometask2.model.StudentGoogleProfile;
 import app.com.example.android.hometask2.util.FetchImageTask;
+import app.com.example.android.hometask2.аpi.ApiInterface;
+import app.com.example.android.hometask2.аpi.GooglePlusApiClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -50,7 +51,7 @@ public class AccountGPlusFragment extends Fragment {
             ApiInterface apiInterface = GooglePlusApiClient.getClient().create(ApiInterface.class);
             call = apiInterface.getStudentGoogleProfile(intent.getStringExtra(Intent.EXTRA_TEXT), API_KEY_GOOGLE_PLUS);
         }
-
+        Log.v("LOG:", call.request().url().toString());
         call.enqueue(new Callback<StudentGoogleProfile>() {
             @Override
             public void onResponse(Call<StudentGoogleProfile> call, Response<StudentGoogleProfile> response) {

@@ -91,7 +91,34 @@ public class GetContactsFragment extends Fragment {
         return listContacts;
     }
 
-    public void insertContact() {
-
-    }
+//    public void insertContact() {
+//        ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
+//        int rawContactInsertIndex = ops.size();
+//
+//        ops.add(ContentProviderOperation.newInsert(RawContacts.CONTENT_URI)
+//                .withValue(RawContacts.ACCOUNT_TYPE, null)
+//                .withValue(RawContacts.ACCOUNT_NAME, null).build());
+//
+//        //Phone Number
+//        ops.add(ContentProviderOperation
+//                .newInsert(ContactsContract.Data.CONTENT_URI)
+//                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID,
+//                        rawContactInsertIndex)
+//                .withValue(Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
+//                .withValue(Phone.NUMBER, "9X-XXXXXXXXX")
+//                .withValue(Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
+//                .withValue(Phone.TYPE, "1").build());
+//
+//        //Display name/Contact name
+//        ops.add(ContentProviderOperation
+//                .newInsert(ContactsContract.Data.CONTENT_URI)
+//                .withValueBackReference(Data.RAW_CONTACT_ID,
+//                        rawContactInsertIndex)
+//                .withValue(Data.MIMETYPE, StructuredName.CONTENT_ITEM_TYPE)
+//                .withValue(StructuredName.DISPLAY_NAME, "Mike Sullivan")
+//                .build());
+//
+//        ContentProviderResult[] res = getContentResolver().applyBatch(
+//                ContactsContract.AUTHORITY, ops);
+//    }
 }

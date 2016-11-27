@@ -1,4 +1,4 @@
-package app.com.example.android.hometask2.Api;
+package app.com.example.android.hometask2.аpi;
 
 import app.com.example.android.hometask2.model.StudentGitProfile;
 import app.com.example.android.hometask2.model.StudentGoogleProfile;
