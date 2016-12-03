@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
 
     <application
             android:allowBackup="true"
@@ -63,8 +64,19 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".getContacts.GetContactsActivity">
+        <activity android:name=".getContacts.ContactsActivity">
         </activity>
+
+        <provider
+                android:name="android.support.v4.content.FileProvider"
+                android:authorities="app.com.example.android.hometask2"
+                android:exported="false"
+
+                android:grantUriPermissions="true">
+            <meta-data
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/photo_provider_path" />
+        </provider>
     </application>
 
 </manifest>

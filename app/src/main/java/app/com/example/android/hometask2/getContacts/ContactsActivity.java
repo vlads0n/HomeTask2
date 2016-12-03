@@ -6,7 +6,7 @@ import android.support.v7.widget.Toolbar;
 import app.com.example.android.hometask2.R;
 
 
-public class GetContactsActivity extends AppCompatActivity {
+public class ContactsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,7 +16,7 @@ public class GetContactsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         toolbar.setTitle("Contacts");
 
-        GetContactsFragment contactsFragment = new GetContactsFragment();
+        ContactsFragment contactsFragment = new ContactsFragment();
         if (savedInstanceState == null)
             getSupportFragmentManager().beginTransaction().replace(R.id.container, contactsFragment).commit();
     }

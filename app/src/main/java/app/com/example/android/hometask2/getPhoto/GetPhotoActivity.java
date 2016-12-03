@@ -1,30 +1,19 @@
 package app.com.example.android.hometask2.getPhoto;
 
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import app.com.example.android.hometask2.R;
-import app.com.example.android.hometask2.broadcastReceiver.HeadsetReceiver;
-import app.com.example.android.hometask2.broadcastReceiver.PowerReceiver;
+import app.com.example.android.hometask2.util.FetchPhotoTask;
 
 public class GetPhotoActivity extends AppCompatActivity {
     ImageView imageView;
-    HeadsetReceiver headsetReceiver;
-    PowerReceiver powerReceiver;
-    Bitmap bitmap;
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            bitmap = (Bitmap) data.getExtras().get("data");
-            imageView.setImageBitmap(bitmap);
-        }
-    }
+    PhotoHelper photoHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,40 +21,32 @@ public class GetPhotoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_get_photo);
 
         imageView = (ImageView) findViewById(R.id.image_from_camera);
+
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, 1);
+                photoHelper = new PhotoHelper(GetPhotoActivity.this, new PhotoHelper.OnPhotoPicked() {
+                    @Override
+                    public void onPicked(Uri photoUri) {
+                        FetchPhotoTask fetchPhotoTask = new FetchPhotoTask(GetPhotoActivity.this, listener);
+                        fetchPhotoTask.execute(photoUri);
+                    }
+                });
+                photoHelper.pickPhoto();
             }
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        headsetReceiver = new HeadsetReceiver();
-        powerReceiver = new PowerReceiver();
-        registerReceiver(headsetReceiver, new IntentFilter("android.intent.action.HEADSET_PLUG"));
-        registerReceiver(powerReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-    }
+    private final FetchPhotoTask.OnPhotoProcessed listener = new FetchPhotoTask.OnPhotoProcessed() {
+        @Override
+        public void onBitmapReady(@Nullable Bitmap bitmap) {
+            imageView.setImageBitmap(bitmap);
+        }
+    };
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        unregisterReceiver(headsetReceiver);
-        unregisterReceiver(powerReceiver);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable("bitmap", bitmap);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        imageView.setImageBitmap((Bitmap) savedInstanceState.getParcelable("bitmap"));
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        photoHelper.onActivityResult(resultCode, requestCode, data);
     }
 }

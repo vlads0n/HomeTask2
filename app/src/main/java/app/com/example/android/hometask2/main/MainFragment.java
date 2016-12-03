@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import app.com.example.android.hometask2.getContacts.GetContactsActivity;
+import app.com.example.android.hometask2.getContacts.ContactsActivity;
 import app.com.example.android.hometask2.R;
 import app.com.example.android.hometask2.broadcastReceiver.HeadsetReceiver;
 import app.com.example.android.hometask2.broadcastReceiver.PowerReceiver;
@@ -67,7 +67,7 @@ public class MainFragment extends Fragment {
         getContacts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), GetContactsActivity.class);
+                Intent intent = new Intent(getContext(), ContactsActivity.class);
                 startActivity(intent);
             }
         });
