@@ -8,18 +8,17 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
-import app.com.example.android.hometask2.gitProfile.AccountGitActivity;
 import app.com.example.android.hometask2.R;
+import app.com.example.android.hometask2.gitProfile.AccountGitActivity;
 import app.com.example.android.hometask2.model.Student;
-
-import java.util.ArrayList;
+import io.realm.RealmResults;
 
 /**
  * Created by Влад on 24.10.2016.
  */
 public class StudentListAdapter extends ArrayAdapter<Student> {
 
-    public StudentListAdapter(Context context, ArrayList<Student> objects) {
+    public StudentListAdapter(Context context, RealmResults<Student> objects) {
         super(context, 0, objects);
     }
 

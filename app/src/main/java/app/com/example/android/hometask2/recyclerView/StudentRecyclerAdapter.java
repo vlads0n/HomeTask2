@@ -9,22 +9,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import app.com.example.android.hometask2.gplusProfile.AccountGPlusActivity;
-import app.com.example.android.hometask2.gitProfile.AccountGitActivity;
 import app.com.example.android.hometask2.R;
+import app.com.example.android.hometask2.gitProfile.AccountGitActivity;
+import app.com.example.android.hometask2.gplusProfile.AccountGPlusActivity;
 import app.com.example.android.hometask2.model.Student;
-
-import java.util.ArrayList;
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by Влад on 26.10.2016.
  */
 public class StudentRecyclerAdapter extends RecyclerView.Adapter<StudentRecyclerAdapter.ViewHolder> {
 
-    private ArrayList<Student> students;
-    int positionDeletedStudent;
-    Student deletedStudent;
-    View rootView;
+    private RealmResults<Student> students;
+    private Realm realm;
+    private int positionDeletedStudent;
+    private Student deletedStudent;
+    private View rootView;
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public TextView studentName;
@@ -63,9 +64,10 @@ public class StudentRecyclerAdapter extends RecyclerView.Adapter<StudentRecycler
         }
     }
 
-    public StudentRecyclerAdapter(ArrayList<Student> students, View rootView) {
+    public StudentRecyclerAdapter(RealmResults<Student> students, View rootView, Realm realm) {
         this.students = students;
         this.rootView = rootView;
+        this.realm = realm;
     }
 
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -89,16 +91,25 @@ public class StudentRecyclerAdapter extends RecyclerView.Adapter<StudentRecycler
         return students.size();
     }
 
-    public void dismissStudent(int position){
+    public void dismissStudent(final int position){
         deletedStudent = students.get(position);
         positionDeletedStudent = position;
-        students.remove(position);
+        realm.beginTransaction();
+        students.deleteFromRealm(position);
+        realm.commitTransaction();
         this.notifyItemRemoved(position);
         showSnackBar();
     }
 
     public void undoDismissStudent() {
-        students.add(positionDeletedStudent, deletedStudent);
+        // TODO: Доробити цей метод
+        final Student student = new Student();
+        student.setNameOfStudent(deletedStudent.getNameOfStudent());
+        student.setGit(deletedStudent.getGit());
+        student.setAccount(deletedStudent.getAccount());
+        realm.beginTransaction();
+        realm.insertOrUpdate(student);
+        realm.commitTransaction();
         this.notifyItemInserted(positionDeletedStudent);
     }
 
