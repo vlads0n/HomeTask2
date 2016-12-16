@@ -25,6 +25,9 @@ public class StudentRecyclerAdapter extends RecyclerView.Adapter<StudentRecycler
     private Realm realm;
     private int positionDeletedStudent;
     private Student deletedStudent;
+    private String nameOfDeletedStudent;
+    private String gitOfDeletedStudent;
+    private String accountOfDeletedStudent;
     private View rootView;
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -94,6 +97,9 @@ public class StudentRecyclerAdapter extends RecyclerView.Adapter<StudentRecycler
     public void dismissStudent(final int position){
         deletedStudent = students.get(position);
         positionDeletedStudent = position;
+        nameOfDeletedStudent = deletedStudent.getNameOfStudent();
+        gitOfDeletedStudent = deletedStudent.getGit();
+        accountOfDeletedStudent = deletedStudent.getAccount();
         realm.beginTransaction();
         students.deleteFromRealm(position);
         realm.commitTransaction();
@@ -102,11 +108,10 @@ public class StudentRecyclerAdapter extends RecyclerView.Adapter<StudentRecycler
     }
 
     public void undoDismissStudent() {
-        // TODO: Доробити цей метод
         final Student student = new Student();
-        student.setNameOfStudent(deletedStudent.getNameOfStudent());
-        student.setGit(deletedStudent.getGit());
-        student.setAccount(deletedStudent.getAccount());
+        student.setNameOfStudent(nameOfDeletedStudent);
+        student.setGit(gitOfDeletedStudent);
+        student.setAccount(accountOfDeletedStudent);
         realm.beginTransaction();
         realm.insertOrUpdate(student);
         realm.commitTransaction();
