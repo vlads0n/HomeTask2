@@ -241,14 +241,8 @@ public class RecyclerViewFragment extends Fragment {
     }
 
     private void updateUI(RealmResults<Student> students) {
-        if (recyclerView.getAdapter() == null) {
-            adapter = new StudentRecyclerAdapter(students, rootView, realm);
-            recyclerView.setAdapter(adapter);
-        }
-        else {
-            adapter = recyclerView.getAdapter();
-            adapter.notifyDataSetChanged();
-        }
+        adapter = new StudentRecyclerAdapter(students, rootView, realm);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -274,7 +268,10 @@ public class RecyclerViewFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                return false;
+                newText = newText.toLowerCase();
+                RealmResults<Student> realmResults = realm.where(Student.class).beginsWith("searchName", newText).findAll();
+                realmResults.addChangeListener(realmChangeListener);
+                return true;
             }
         });
     }

@@ -256,7 +256,10 @@ public class ListViewFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                return false;
+                newText = newText.toLowerCase();
+                RealmResults<Student> realmResults = realm.where(Student.class).beginsWith("searchName", newText).findAll();
+                realmResults.addChangeListener(realmChangeListener);
+                return true;
             }
         });
     }
