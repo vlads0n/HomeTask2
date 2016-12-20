@@ -1,10 +1,14 @@
 package app.com.example.android.hometask2.getContacts;
 
 
+import android.content.ContentProviderOperation;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.OperationApplicationException;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.RemoteException;
+import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -18,10 +22,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import app.com.example.android.hometask2.R;
 import app.com.example.android.hometask2.model.Contact;
 import app.com.example.android.hometask2.util.ContactsDataLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -33,8 +39,8 @@ import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
  */
 public class ContactsFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Contact>>{
 
+    private static final int LOADER_ID = 13;
     private static final int READ_CONTACTS_REQUEST = 1;
-    private ContactsAdapter adapter;
     private RecyclerView recyclerView;
 
     public ContactsFragment() {
@@ -46,7 +52,7 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_get_contacts, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_get_contacts, container, false);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.contact_recycler_view);
 
@@ -54,7 +60,7 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
         recyclerView.setLayoutManager(layoutManager);
 
         if (ActivityCompat.checkSelfPermission(getActivity(), READ_CONTACTS) == PERMISSION_GRANTED) {
-            getActivity().getSupportLoaderManager().initLoader(1, null, this).forceLoad();
+            getActivity().getSupportLoaderManager().initLoader(LOADER_ID, null, this).forceLoad();
         } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), READ_CONTACTS)) {
                 showExplanationDialog();
@@ -67,10 +73,32 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final View dialogView = getActivity().getLayoutInflater().inflate(R.layout.my_dialog_message, null);
+                AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity())
+                        .setTitle(R.string.create_new_contact)
+                        .setView(dialogView)
+                        .setPositiveButton(R.string.create_button, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                EditText contactName = (EditText) dialogView.findViewById(R.id.edit_contact_name);
+                                EditText contactPhoneNumber = (EditText) dialogView.findViewById(R.id.edit_contact_phone_number);
+                                String name = contactName.getText().toString();
+                                String phoneNumber = contactPhoneNumber.getText().toString();
+                                if (!name.equals("") && !phoneNumber.equals("")) {
+                                    addContact(name, phoneNumber);
+                                    restartLoader();
+                                }
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel_button, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
 
+                            }
+                        });
+                dialog.show();
             }
         });
-
         return rootView;
     }
 
@@ -139,5 +167,34 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
         startActivity(intent);
+    }
+
+    private void addContact(String name, String number){
+        ArrayList<ContentProviderOperation> operations = new ArrayList<>();
+        int rawContactInsertIndex = operations.size();
+
+        operations.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_NAME,null )
+                .build());
+        operations.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactInsertIndex)
+                .withValue(ContactsContract.Contacts.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, number)
+                .build());
+        operations.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                .withValueBackReference(ContactsContract.Contacts.Data.RAW_CONTACT_ID, rawContactInsertIndex)
+                .withValue(ContactsContract.Contacts.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+                .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, name)
+                .build());
+        try {
+            getContext().getContentResolver().applyBatch(ContactsContract.AUTHORITY, operations);
+        } catch (RemoteException | OperationApplicationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void restartLoader() {
+        getActivity().getSupportLoaderManager().initLoader(LOADER_ID, null, this).forceLoad();
     }
 }

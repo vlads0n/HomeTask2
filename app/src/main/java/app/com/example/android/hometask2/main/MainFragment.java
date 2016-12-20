@@ -9,11 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import app.com.example.android.hometask2.getContacts.ContactsActivity;
 import app.com.example.android.hometask2.R;
 import app.com.example.android.hometask2.broadcastReceiver.HeadsetReceiver;
 import app.com.example.android.hometask2.broadcastReceiver.PowerReceiver;
-import app.com.example.android.hometask2.getPhoto.GetPhotoActivity;
 import app.com.example.android.hometask2.listView.ListViewActivity;
 import app.com.example.android.hometask2.recyclerView.RecyclerViewActivity;
 
@@ -50,24 +48,6 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), RecyclerViewActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        Button getPhotoButton = (Button) rootView.findViewById(R.id.get_photo_button);
-        getPhotoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), GetPhotoActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        Button getContacts = (Button) rootView.findViewById(R.id.get_contacts_button);
-        getContacts.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), ContactsActivity.class);
                 startActivity(intent);
             }
         });

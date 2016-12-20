@@ -241,8 +241,14 @@ public class RecyclerViewFragment extends Fragment {
     }
 
     private void updateUI(RealmResults<Student> students) {
-        adapter = new StudentRecyclerAdapter(students, rootView, realm);
-        recyclerView.setAdapter(adapter);
+        if (recyclerView.getAdapter() == null) {
+            adapter = new StudentRecyclerAdapter(students, rootView, realm);
+            recyclerView.setAdapter(adapter);
+        }
+        else {
+            StudentRecyclerAdapter studentRecyclerAdapter = (StudentRecyclerAdapter) recyclerView.getAdapter();
+            studentRecyclerAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -260,17 +266,17 @@ public class RecyclerViewFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                query = query.toLowerCase();
-                RealmResults<Student> realmResults = realm.where(Student.class).beginsWith("searchName", query).findAll();
-                realmResults.addChangeListener(realmChangeListener);
-                return true;
+                return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 newText = newText.toLowerCase();
-                RealmResults<Student> realmResults = realm.where(Student.class).beginsWith("searchName", newText).findAll();
-                realmResults.addChangeListener(realmChangeListener);
+                if (newText.equals(""))
+                    return true;
+                RealmResults<Student> realmResults = realm.where(Student.class).contains("searchName", newText).findAll();
+                adapter = new StudentRecyclerAdapter(realmResults, rootView, realm);
+                recyclerView.setAdapter(adapter);
                 return true;
             }
         });

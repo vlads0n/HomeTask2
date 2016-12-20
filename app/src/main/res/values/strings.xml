@@ -5,9 +5,14 @@
 
     <string name="button_list_view">List View</string>
     <string name="button_recycler_view">Recycler View</string>
-    <string name="button_get_photo">Get Photo</string>
-    <string name="button_get_contacts">Get contacts</string>
+    <string name="get_photo">Get Photo</string>
+    <string name="get_contacts">Get contacts</string>
     <string name="button_add_contact">Add contact</string>
-    <string name="search">Search</string>>
+    <string name="search">Search</string>
+    <string name="create_new_contact">Create new contact</string>
+    <string name="contact_name">Name</string>
+    <string name="contact_phone_number">Phone number</string>
+    <string name="create_button">Create</string>
+    <string name="cancel_button">Cancel</string>
 
 </resources>
