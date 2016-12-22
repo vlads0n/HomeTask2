@@ -14,9 +14,9 @@ import app.com.example.android.hometask2.R;
 import app.com.example.android.hometask2.broadcastReceiver.HeadsetReceiver;
 import app.com.example.android.hometask2.broadcastReceiver.PowerReceiver;
 import app.com.example.android.hometask2.model.StudentGoogleProfile;
-import app.com.example.android.hometask2.util.FetchImageTask;
 import app.com.example.android.hometask2.аpi.ApiInterface;
 import app.com.example.android.hometask2.аpi.GooglePlusApiClient;
+import com.squareup.picasso.Picasso;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -58,11 +58,7 @@ public class AccountGPlusFragment extends Fragment {
                 StudentGoogleProfile studentGoogleProfile = response.body();
                 name.setText(studentGoogleProfile.getName());
                 surname.setText(studentGoogleProfile.getSurname());
-                FetchImageTask fetchImageTask = new FetchImageTask(studentGoogleProfile.getImageUrl());
-                fetchImageTask.execute();
-                try {
-                    imageView.setImageBitmap(fetchImageTask.get());
-                } catch (Exception e) {}
+                Picasso.with(getContext()).load(studentGoogleProfile.getImageUrl()).into(imageView);
             }
 
             @Override

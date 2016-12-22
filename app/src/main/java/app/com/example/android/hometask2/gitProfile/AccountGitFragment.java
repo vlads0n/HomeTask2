@@ -9,13 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import app.com.example.android.hometask2.аpi.ApiInterface;
-import app.com.example.android.hometask2.аpi.GitHubApiClient;
 import app.com.example.android.hometask2.R;
 import app.com.example.android.hometask2.broadcastReceiver.HeadsetReceiver;
 import app.com.example.android.hometask2.broadcastReceiver.PowerReceiver;
 import app.com.example.android.hometask2.model.StudentGitProfile;
-import app.com.example.android.hometask2.util.FetchImageTask;
+import app.com.example.android.hometask2.аpi.ApiInterface;
+import app.com.example.android.hometask2.аpi.GitHubApiClient;
+import com.squareup.picasso.Picasso;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -58,11 +58,7 @@ public class AccountGitFragment extends Fragment {
                 StudentGitProfile studentGitProfile = response.body();
                 name.setText(studentGitProfile.getName());
                 login.setText(studentGitProfile.getLogin());
-                FetchImageTask fetchImageTask = new FetchImageTask(studentGitProfile.getAvatar());
-                fetchImageTask.execute();
-                try {
-                    imageView.setImageBitmap(fetchImageTask.get());
-                } catch (Exception e) {}
+                Picasso.with(getContext()).load(studentGitProfile.getAvatar()).into(imageView);
             }
 
             @Override
