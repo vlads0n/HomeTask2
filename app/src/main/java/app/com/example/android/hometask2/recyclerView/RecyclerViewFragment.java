@@ -272,8 +272,6 @@ public class RecyclerViewFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 newText = newText.toLowerCase();
-                if (newText.equals(""))
-                    return true;
                 RealmResults<Student> realmResults = realm.where(Student.class).contains("searchName", newText).findAll();
                 adapter = new StudentRecyclerAdapter(realmResults, rootView, realm);
                 recyclerView.setAdapter(adapter);

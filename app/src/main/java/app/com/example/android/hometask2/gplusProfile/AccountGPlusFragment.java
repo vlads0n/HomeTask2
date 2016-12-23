@@ -2,6 +2,7 @@ package app.com.example.android.hometask2.gplusProfile;
 
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import app.com.example.android.hometask2.R;
 import app.com.example.android.hometask2.broadcastReceiver.HeadsetReceiver;
 import app.com.example.android.hometask2.broadcastReceiver.PowerReceiver;
@@ -20,6 +22,8 @@ import com.squareup.picasso.Picasso;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import java.util.regex.Pattern;
 
 
 /**
@@ -47,25 +51,42 @@ public class AccountGPlusFragment extends Fragment {
         final TextView name = (TextView) rootView.findViewById(R.id.student_account_gplus_name);
         final TextView surname = (TextView) rootView.findViewById(R.id.student_account_gplus_surname);
 
-        if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
+        Uri uri = null;
+        if (intent != null)
+            uri = intent.getData();
+
+        Pattern pattern = Pattern.compile("https://plus.google.com/u/0/\\d{21}");
+
+        if (uri != null) {
+            if (pattern.matcher(uri.toString()).matches()) {
+                ApiInterface apiInterface = GooglePlusApiClient.getClient().create(ApiInterface.class);
+                call = apiInterface.getStudentGoogleProfile(uri.getLastPathSegment(), API_KEY_GOOGLE_PLUS);
+            }
+            else {
+                Toast.makeText(getActivity(), "Invalid link!!! Choose another browser, please.", Toast.LENGTH_LONG).show();
+                getActivity().startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            }
+        }
+        else if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
             ApiInterface apiInterface = GooglePlusApiClient.getClient().create(ApiInterface.class);
             call = apiInterface.getStudentGoogleProfile(intent.getStringExtra(Intent.EXTRA_TEXT), API_KEY_GOOGLE_PLUS);
         }
-        Log.v("LOG:", call.request().url().toString());
-        call.enqueue(new Callback<StudentGoogleProfile>() {
-            @Override
-            public void onResponse(Call<StudentGoogleProfile> call, Response<StudentGoogleProfile> response) {
-                StudentGoogleProfile studentGoogleProfile = response.body();
-                name.setText(studentGoogleProfile.getName());
-                surname.setText(studentGoogleProfile.getSurname());
-                Picasso.with(getContext()).load(studentGoogleProfile.getImageUrl()).into(imageView);
-            }
+        if (call != null) {
+            Log.v("LOG:", call.request().url().toString());
+            call.enqueue(new Callback<StudentGoogleProfile>() {
+                @Override
+                public void onResponse(Call<StudentGoogleProfile> call, Response<StudentGoogleProfile> response) {
+                    StudentGoogleProfile studentGoogleProfile = response.body();
+                    name.setText(studentGoogleProfile.getName());
+                    surname.setText(studentGoogleProfile.getSurname());
+                    Picasso.with(getContext()).load(studentGoogleProfile.getImageUrl()).into(imageView);
+                }
 
-            @Override
-            public void onFailure(Call<StudentGoogleProfile> call, Throwable t) {
-
-            }
-        });
+                @Override
+                public void onFailure(Call<StudentGoogleProfile> call, Throwable t) {
+                }
+            });
+        }
 
         return rootView;
     }

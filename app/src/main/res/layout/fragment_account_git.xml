@@ -3,46 +3,34 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
         android:gravity="center"
         tools:context=".gitProfile.AccountGitFragment">
 
-    <android.support.v7.widget.CardView
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_gravity="center"
-            app:cardCornerRadius="50dp">
-
-        <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/student_account_git_image"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                tools:src="@drawable/image"/>
-    </android.support.v7.widget.CardView>
+    <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="@dimen/photo_size"
+            android:layout_height="@dimen/photo_size"
+            android:id="@+id/student_account_git_image"
+            tools:src="@drawable/image"/>
 
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingTop="56dp"
+            android:paddingTop="@dimen/activity_vertical_margin"
             android:orientation="vertical">
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/student_account_git_name"
-                android:paddingRight="16dp"
-                android:textSize="56sp"
+                android:textSize="@dimen/large_letter"
                 android:textColor="@android:color/black"
                 tools:text="Vladyslav"/>
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/student_account_git_login"
-                android:textSize="48sp"
-                android:paddingTop="16dp"
+                android:textSize="@dimen/medium_letter"
                 android:textColor="@android:color/black"
                 tools:text="vladson"/>
 

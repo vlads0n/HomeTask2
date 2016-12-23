@@ -2,13 +2,16 @@ package app.com.example.android.hometask2.gitProfile;
 
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import app.com.example.android.hometask2.R;
 import app.com.example.android.hometask2.broadcastReceiver.HeadsetReceiver;
 import app.com.example.android.hometask2.broadcastReceiver.PowerReceiver;
@@ -20,6 +23,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import java.util.regex.Pattern;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,7 +32,6 @@ import retrofit2.Response;
 public class AccountGitFragment extends Fragment {
     HeadsetReceiver headsetReceiver;
     PowerReceiver powerReceiver;
-    boolean invalidLink;
 
     public AccountGitFragment() {
         // Required empty public constructor
@@ -47,25 +51,44 @@ public class AccountGitFragment extends Fragment {
         final TextView name = (TextView) rootView.findViewById(R.id.student_account_git_name);
         final TextView login = (TextView) rootView.findViewById(R.id.student_account_git_login);
 
-        if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
+        Uri uri = null;
+        if (intent != null)
+            uri = intent.getData();
+
+        Pattern pattern = Pattern.compile("https://github.com/\\w+");
+
+        if (uri != null) {
+            if (pattern.matcher(uri.toString()).matches()) {
+                ApiInterface apiInterface = GitHubApiClient.getClient().create(ApiInterface.class);
+                call = apiInterface.getStudentGitHubProfile(uri.getPath().substring(1));
+                Log.v("LOG:", uri.getPath());
+            }
+            else {
+                Toast.makeText(getActivity(), "Invalid link!!! Choose another browser, please.", Toast.LENGTH_LONG).show();
+                getActivity().startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            }
+        }
+        else if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
             ApiInterface apiInterface = GitHubApiClient.getClient().create(ApiInterface.class);
             call = apiInterface.getStudentGitHubProfile(intent.getStringExtra(Intent.EXTRA_TEXT));
         }
 
-        call.enqueue(new Callback<StudentGitProfile>() {
-            @Override
-            public void onResponse(Call<StudentGitProfile> call, Response<StudentGitProfile> response) {
-                StudentGitProfile studentGitProfile = response.body();
-                name.setText(studentGitProfile.getName());
-                login.setText(studentGitProfile.getLogin());
-                Picasso.with(getContext()).load(studentGitProfile.getAvatar()).into(imageView);
-            }
+        if (call != null) {
+            call.enqueue(new Callback<StudentGitProfile>() {
+                @Override
+                public void onResponse(Call<StudentGitProfile> call, Response<StudentGitProfile> response) {
+                    StudentGitProfile studentGitProfile = response.body();
+                    name.setText(studentGitProfile.getName());
+                    login.setText(studentGitProfile.getLogin());
+                    Picasso.with(getContext()).load(studentGitProfile.getAvatar()).into(imageView);
+                }
 
-            @Override
-            public void onFailure(Call<StudentGitProfile> call, Throwable t) {
+                @Override
+                public void onFailure(Call<StudentGitProfile> call, Throwable t) {
 
-            }
-        });
+                }
+            });
+        }
 
         return rootView;
     }
